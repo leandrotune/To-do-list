@@ -1,0 +1,41 @@
+.containerTask {
+  display: flex;
+  justify-content: space-around;
+  width: 46rem;
+  height: auto;
+  padding: 1rem;
+  background: var(--gray-500);
+  border-radius: 8px;
+  border: 1px solid var(--gray-400);
+  box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.contentTask {
+  width: 39.5rem;
+}
+
+.content input[type=checkbox] {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.contentTask p {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--gray-100);
+}
+
+.containerTask button {
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  line-height: 0;
+  color: var(--gray-300);
+}
+
+.containerTask button:hover {
+  cursor: pointer;
+  color: var(--danger);
+  background: var(--gray-400);
+}

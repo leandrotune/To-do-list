@@ -3,3 +3,7 @@
   margin: 0 auto;
   padding: 0 1rem;
 }
+
+.container main {
+  min-height: 51.5px;
+}
