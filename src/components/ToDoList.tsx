@@ -1,11 +1,12 @@
 import { useState } from 'react';
+import { NoListShown } from './NoListShown';
 
 import { Task } from './Task'
 
-import styles from './Tasks.module.css'
+import styles from './ToDoList.module.css'
 
-export function Tasks() {
-  const [tasks, setTasks] = useState(0)
+export function ToDoList() {
+  const [tasks, setTasks] = useState('')
 
   return (
     <article className={styles.containerTasks}>
@@ -19,7 +20,12 @@ export function Tasks() {
       </header>
 
       <div className={styles.listTasks}>
+        <NoListShown />
+
+        {/* <Task />
         <Task />
+        <Task />
+        <Task /> */}
       </div>
     </article>
   )

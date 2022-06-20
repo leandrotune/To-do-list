@@ -4,7 +4,7 @@ import { NewTaskField } from './components/NewTaskField'
 import styles from './App.module.css'
 
 import './global.css'
-import { Tasks } from './components/Tasks'
+import { ToDoList } from './components/ToDoList'
 
 export function App() {
   return (
@@ -15,7 +15,7 @@ export function App() {
         <NewTaskField />
 
         <main>
-          <Tasks />
+          <ToDoList />
         </main>
       </div>
     </>

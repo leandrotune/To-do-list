@@ -1,0 +1,25 @@
+.noTasksAdded {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 15.25rem;
+  border-top: 1px solid var(--gray-400);
+  border-radius: 8px;
+}
+
+.noTasksAdded img {
+  padding-bottom: 1rem;
+}
+
+.noTasksAdded strong {
+  font-weight: 700;
+  line-height: 1.4;
+  color: var(--gray-300);
+}
+
+.noTasksAdded span {
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--gray-300);
+}
