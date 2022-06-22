@@ -1,25 +1,38 @@
 import { Trash } from 'phosphor-react'
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 
 import styles from './Task.module.css'
 
-export function Task() {
+interface TaskProps {
+  content: string;
+  onDeleteTask: (task: string) => void;
+  onTaskCompleted: (task: boolean) => void;
+}
 
-  const [tasks, setTasks] = useState(0)
+export function Task({ content, onDeleteTask, onTaskCompleted }: TaskProps) {
+
+  function handleDeleteTask() {
+    onDeleteTask(content)
+  }
+
+  function handleTaskCompleted(event: ChangeEvent<HTMLInputElement>) {
+    onTaskCompleted(event.target.checked)
+  }
 
   return (
     <>
       <form className={styles.containerTask}>
         <div className={styles.content}>
-          <input type="checkbox" />
+          <input type="checkbox" onChange={handleTaskCompleted} />
         </div>
         <div className={styles.contentTask}>
-          <p>Integer urna interdum massa libero auctor neque turpis turpis semper. Duis vel sed fames integer.</p>
+          <p>{content}</p>
         </div>
 
-        <button
+        <button onClick={handleDeleteTask}
           className={styles.content}
           type="button">
+
           <Trash
             size={16}
             weight="regular"

@@ -1,21 +1,66 @@
-import { useState } from 'react';
+import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react';
 
 import { Task } from './Task'
 
-import { PlusCircle } from 'phosphor-react'
+import { Key, PlusCircle } from 'phosphor-react'
 
 import styles from './ToDoList.module.css'
+import { NoListShown } from './NoListShown';
+interface HandleNewTaskTextProps {
+  event: ChangeEvent<HTMLInputElement>
+  taskEstruturas: {
+    title: string
+    isComplete: boolean
+  }
+}
 
 export function ToDoList() {
-  const [tasksAdd, setTasksAdd] = useState([1, 2, 3])
+  const [tasksAdd, setTasksAdd] = useState([''])
+  const [newTaskText, setNewTaskText] = useState('')
+
+  function handleCreateNewTask(event: FormEvent) {
+    event.preventDefault()
+
+    setTasksAdd([...tasksAdd, newTaskText])
+    setNewTaskText('')
+  }
+
+  function handleNewTaskText(event: ChangeEvent<HTMLInputElement>) {
+    event.target.setCustomValidity('')
+    setNewTaskText(event.target.value)
+
+  }
+
+  function handleNewTaskInvalid(event: InvalidEvent<HTMLInputElement>) {
+    event.target.setCustomValidity('Esse campo é obrigatório')
+  }
+
+  function deleteTask(taskToDelete: string) {
+    const taskWithotDeletedOne = tasksAdd.filter(task => {
+      return task !== taskToDelete
+    })
+
+    setTasksAdd(taskWithotDeletedOne)
+  }
+
+  function taskCompleted(checked: boolean) {
+    if (checked === true) {
+      console.log(`Este é o conteúdo `)
+    }
+  }
+
+  const noTasksAdded = tasksAdd.length == 0
 
   return (
     <div className={styles.container}>
       <article>
-        <form className={styles.fieldAddTasks}>
+        <form onSubmit={handleCreateNewTask} className={styles.fieldAddTasks}>
           <input
             type="text"
             placeholder='Adicione uma nova tarefa'
+            value={newTaskText}
+            onChange={handleNewTaskText}
+            onInvalid={handleNewTaskInvalid}
             required
           />
 
@@ -29,7 +74,7 @@ export function ToDoList() {
       <main className={styles.containerTasks}>
         <header className={styles.inforTasks}>
           <div>
-            <strong>Tarefas criadas <span>0</span></strong>
+            <strong>Tarefas criadas <span>{tasksAdd.length}</span></strong>
           </div>
           <div>
             <strong>Concluídas <span>2 de 5</span></strong>
@@ -37,11 +82,22 @@ export function ToDoList() {
         </header>
 
         <div className={styles.listTasks}>
-          {tasksAdd.map(taskAdd => {
-            return (
-              <Task />
-            )
-          })}
+          {noTasksAdded ? (
+            <NoListShown />
+          ) : (
+            <>
+              {tasksAdd.map(task => {
+                return (
+                  <Task
+                    key={task}
+                    content={task}
+                    onDeleteTask={deleteTask}
+                    onTaskCompleted={taskCompleted}
+                  />
+                )
+              })}
+            </>
+          )}
         </div>
       </main>
     </div>
