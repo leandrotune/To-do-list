@@ -1,66 +1,60 @@
 import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react';
-
+import { v4 as uuidv4 } from 'uuid';
 import { Task } from './Task'
 
-import { Key, PlusCircle } from 'phosphor-react'
+import { PlusCircle } from 'phosphor-react'
 
 import styles from './ToDoList.module.css'
 import { NoListShown } from './NoListShown';
-interface HandleNewTaskTextProps {
-  event: ChangeEvent<HTMLInputElement>
-  taskEstruturas: {
-    title: string
-    isComplete: boolean
-  }
+
+interface Task {
+  id: string;
+  title: string;
+  isComplete: boolean;
 }
 
+const newTask: Task[] = [
+
+]
+
 export function ToDoList() {
-  const [tasksAdd, setTasksAdd] = useState([''])
-  const [newTaskText, setNewTaskText] = useState('')
-
-  function handleCreateNewTask(event: FormEvent) {
-    event.preventDefault()
-
-    setTasksAdd([...tasksAdd, newTaskText])
-    setNewTaskText('')
-  }
+  const [newTaskText, setNewTaskText] = useState([''])
+  const [taskAdd, setTaskAdd] = useState([{}])
 
   function handleNewTaskText(event: ChangeEvent<HTMLInputElement>) {
-    event.target.setCustomValidity('')
-    setNewTaskText(event.target.value)
-
+    setNewTaskText([event.target.value])
   }
 
-  function handleNewTaskInvalid(event: InvalidEvent<HTMLInputElement>) {
-    event.target.setCustomValidity('Esse campo é obrigatório')
-  }
+  function handleCreateTask(event: FormEvent) {
+    event.preventDefault()
 
-  function deleteTask(taskToDelete: string) {
-    const taskWithotDeletedOne = tasksAdd.filter(task => {
-      return task !== taskToDelete
+    const taskStructure = {
+      id: uuidv4(),
+      title: 'bom dia!',
+      isComplete: false,
+    }
+
+    newTaskText.filter(text => {
+      return taskStructure.title = text
     })
 
-    setTasksAdd(taskWithotDeletedOne)
+    newTask.push(taskStructure)
+
+    setTaskAdd([...taskAdd, newTask])
   }
 
-  function taskCompleted(checked: boolean) {
-    if (checked === true) {
-      console.log(`Este é o conteúdo `)
-    }
-  }
-
-  const noTasksAdded = tasksAdd.length == 0
+  const noTasksAdded = newTask.length == 0
 
   return (
     <div className={styles.container}>
       <article>
-        <form onSubmit={handleCreateNewTask} className={styles.fieldAddTasks}>
+        <form onSubmit={handleCreateTask} className={styles.fieldAddTasks}>
           <input
             type="text"
             placeholder='Adicione uma nova tarefa'
-            value={newTaskText}
+            // value={newTaskText}
             onChange={handleNewTaskText}
-            onInvalid={handleNewTaskInvalid}
+            // onInvalid={handleNewTaskInvalid}
             required
           />
 
@@ -74,10 +68,10 @@ export function ToDoList() {
       <main className={styles.containerTasks}>
         <header className={styles.inforTasks}>
           <div>
-            <strong>Tarefas criadas <span>{tasksAdd.length}</span></strong>
+            <strong>Tarefas criadas <span>{newTask.length}</span></strong>
           </div>
           <div>
-            <strong>Concluídas <span>2 de 5</span></strong>
+            <strong>Concluídas <span>2 de{newTask.length}</span></strong>
           </div>
         </header>
 
@@ -86,13 +80,12 @@ export function ToDoList() {
             <NoListShown />
           ) : (
             <>
-              {tasksAdd.map(task => {
+              {newTask.map(task => {
                 return (
                   <Task
-                    key={task}
-                    content={task}
-                    onDeleteTask={deleteTask}
-                    onTaskCompleted={taskCompleted}
+                    key={task.id}
+                    content={task.title}
+                    stateTask={task.isComplete}
                   />
                 )
               })}

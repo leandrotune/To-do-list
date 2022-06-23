@@ -5,31 +5,28 @@ import styles from './Task.module.css'
 
 interface TaskProps {
   content: string;
-  onDeleteTask: (task: string) => void;
-  onTaskCompleted: (task: boolean) => void;
+  stateTask: boolean;
+
+
 }
 
-export function Task({ content, onDeleteTask, onTaskCompleted }: TaskProps) {
+export function Task({ content }: TaskProps) {
 
   function handleDeleteTask() {
-    onDeleteTask(content)
-  }
 
-  function handleTaskCompleted(event: ChangeEvent<HTMLInputElement>) {
-    onTaskCompleted(event.target.checked)
   }
 
   return (
     <>
       <form className={styles.containerTask}>
         <div className={styles.content}>
-          <input type="checkbox" onChange={handleTaskCompleted} />
+          <input type="checkbox" />
         </div>
         <div className={styles.contentTask}>
           <p>{content}</p>
         </div>
 
-        <button onClick={handleDeleteTask}
+        <button onClick={handleDeleteTask} title="Deletar comentário"
           className={styles.content}
           type="button">
 
