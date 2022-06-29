@@ -1,32 +1,47 @@
 import { Trash } from 'phosphor-react'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useState } from 'react';
 
 import styles from './Task.module.css'
-
-interface TaskProps {
+export interface TaskProps {
+  id: string;
   content: string;
-  stateTask: boolean;
-
-
+  isComplete: boolean;
+  onDeleteTask: (id: string) => void;
+  onTaskCompleted: (id: string, isComplete: boolean,) => void
 }
 
-export function Task({ content }: TaskProps) {
+export function Task({ content, isComplete, id, onDeleteTask, onTaskCompleted }: TaskProps) {
+
+
+  function handleTaskCompleted(event: ChangeEvent<HTMLInputElement>) {
+    if (event.target.checked) {
+      isComplete = true;
+      onTaskCompleted(id, isComplete)
+    } else if (event.target.checked === false && isComplete === true) {
+      isComplete = false;
+      onTaskCompleted(id, isComplete)
+    }
+  }
 
   function handleDeleteTask() {
-
+    onDeleteTask(id)
   }
 
   return (
     <>
-      <form className={styles.containerTask}>
+      <form
+        id={id}
+        className={styles.containerTask}>
         <div className={styles.content}>
-          <input type="checkbox" />
+          <input className={styles.checkbox} type="checkbox" onChange={handleTaskCompleted} />
         </div>
         <div className={styles.contentTask}>
-          <p>{content}</p>
+          <p className={isComplete ? styles.taskCompleted : styles.taskNotCompleted}>
+            {content}
+          </p>
         </div>
 
-        <button onClick={handleDeleteTask} title="Deletar comentário"
+        <button title="Deletar comentário" onClick={handleDeleteTask}
           className={styles.content}
           type="button">
 

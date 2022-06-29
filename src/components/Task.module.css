@@ -14,12 +14,52 @@
   width: 39.5rem;
 }
 
-.content input[type=checkbox] {
+.checkbox {
+  appearance: none;
   width: 1.5rem;
   height: 1.5rem;
+  border: 2px solid var(--blue);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
 }
 
-.contentTask p {
+.checkbox:checked:before {
+  opacity: 0.9;
+}
+
+.checkbox:checked {
+  border: 2px solid var(--purpleDark);
+  background: var(--purpleDark);
+}
+
+.checkbox:before {
+  content: "";
+  width: 7.31px;
+  height: 4.69px;
+  border-radius: 0;
+  opacity: 0;
+  transition: all ease-in-out;
+  border-left: 3px solid var(--gray-100);
+  border-bottom: 3px solid var(--gray-100);
+  transform: rotate(-45deg);
+}
+
+.checkbox:hover {
+  cursor: pointer;
+}
+
+.taskCompleted {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.4;
+  color: var(--gray-300);
+  text-decoration-line: line-through;
+}
+
+.taskNotCompleted {
   font-size: 0.875rem;
   font-weight: 400;
   line-height: 1.4;

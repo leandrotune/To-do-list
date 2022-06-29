@@ -1,28 +1,32 @@
-import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, InvalidEvent, useReducer, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
-import { Task } from './Task'
+import { Task, TaskProps } from './Task'
 
 import { PlusCircle } from 'phosphor-react'
 
 import styles from './ToDoList.module.css'
 import { NoListShown } from './NoListShown';
-
-interface Task {
+interface TaskAddProps {
   id: string;
   title: string;
   isComplete: boolean;
 }
 
-const newTask: Task[] = [
-
-]
+interface StatusTasks {
+  tasks: TaskAddProps
+}
 
 export function ToDoList() {
   const [newTaskText, setNewTaskText] = useState([''])
-  const [taskAdd, setTaskAdd] = useState([{}])
+  const [tasksAdd, setTasksAdd] = useState<TaskAddProps[]>([])
 
   function handleNewTaskText(event: ChangeEvent<HTMLInputElement>) {
+    event.target.setCustomValidity('')
     setNewTaskText([event.target.value])
+  }
+
+  function handleNewTaskInvalid(event: InvalidEvent<HTMLInputElement>) {
+    event.target.setCustomValidity('Esse campo é obrigatório!')
   }
 
   function handleCreateTask(event: FormEvent) {
@@ -38,23 +42,64 @@ export function ToDoList() {
       return taskStructure.title = text
     })
 
-    newTask.push(taskStructure)
-
-    setTaskAdd([...taskAdd, newTask])
+    setTasksAdd([...tasksAdd, taskStructure])
+    setNewTaskText([''])
   }
 
-  const noTasksAdded = newTask.length == 0
+  function deleteTask(taskId: string,) {
+    const taskListWithoutTheDeletedTask = tasksAdd.filter(task => {
+      return task.id !== taskId
+    })
+
+    setTasksAdd(taskListWithoutTheDeletedTask)
+  }
+
+  function taskCompleted(taskId: string, taskCompleted: boolean) {
+    if (taskCompleted) {
+      const tasks = tasksAdd.map(task => {
+        if (task.id === taskId)
+          return {
+            id: task.id,
+            title: task.title,
+            isComplete: task.isComplete = true
+          }
+        if (task.id !== taskId) {
+          return task
+        }
+      })
+
+      setTasksAdd(tasks)
+    } else {
+      const tasksNotCompleted = tasksAdd.map(task => {
+        if (task.id === taskId)
+          return {
+            id: task.id,
+            title: task.title,
+            isComplete: task.isComplete = false
+          }
+        if (task.id !== taskId) {
+          return task
+        }
+      })
+      setTasksAdd(tasksNotCompleted)
+    }
+  }
+
+  let numberOfTasksCompleted = tasksAdd.filter(task => task.isComplete === true).length
+
+  const noTasksAdded = tasksAdd.length === 0
 
   return (
     <div className={styles.container}>
       <article>
         <form onSubmit={handleCreateTask} className={styles.fieldAddTasks}>
           <input
+            name="task"
             type="text"
             placeholder='Adicione uma nova tarefa'
-            // value={newTaskText}
+            value={newTaskText}
             onChange={handleNewTaskText}
-            // onInvalid={handleNewTaskInvalid}
+            onInvalid={handleNewTaskInvalid}
             required
           />
 
@@ -68,10 +113,10 @@ export function ToDoList() {
       <main className={styles.containerTasks}>
         <header className={styles.inforTasks}>
           <div>
-            <strong>Tarefas criadas <span>{newTask.length}</span></strong>
+            <strong>Tarefas criadas <span>{tasksAdd.length}</span></strong>
           </div>
           <div>
-            <strong>Concluídas <span>2 de{newTask.length}</span></strong>
+            <strong>Concluídas <span>{`${numberOfTasksCompleted} de ${tasksAdd.length}`}</span></strong>
           </div>
         </header>
 
@@ -80,12 +125,15 @@ export function ToDoList() {
             <NoListShown />
           ) : (
             <>
-              {newTask.map(task => {
+              {tasksAdd.map(task => {
                 return (
                   <Task
                     key={task.id}
+                    id={task.id}
                     content={task.title}
-                    stateTask={task.isComplete}
+                    isComplete={task.isComplete}
+                    onDeleteTask={deleteTask}
+                    onTaskCompleted={taskCompleted}
                   />
                 )
               })}

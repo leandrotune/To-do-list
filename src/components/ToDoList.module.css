@@ -48,6 +48,10 @@
   color: var(--gray-100);
 }
 
+.fieldAddTasks button[type=submit]:hover {
+  background: var(--blue);
+}
+
 .containerTasks {
   max-width: 46rem;
   margin-top: 4rem;
@@ -78,7 +82,7 @@
   color: var(--blue);
 }
 
-.inforTasks strong:nth-child(2) {
+.inforTasks div:nth-child(2) strong {
   font-size: 0.875rem;
   font-weight: 700;
   line-height: 1.063rem;
