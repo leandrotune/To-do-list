@@ -1,7 +1,5 @@
 ## Desafio 01 - To-Do List
 
-<img src="https://www.figma.com/file/xzm707nGL3rtrczll52dEr/ToDo-List-(Copy)?node-id=56%3A99" align="center" />
-
 Durante este desafio, utilizamos os conceitos básicos do React desenvolvendo do zero uma simples lista de tarefas com as opções de criar e apagar um item da lista.
 
 ### 🛠️ Nesse projeto foi utilizado
