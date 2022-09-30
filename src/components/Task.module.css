@@ -1,8 +1,10 @@
 .containerTask {
+  max-width: 46rem;
+  width: 100%;
+  height: auto;
   display: flex;
   justify-content: space-around;
-  width: 46rem;
-  height: auto;
+  gap: 12px;
   padding: 1rem;
   background: var(--gray-500);
   border-radius: 8px;
