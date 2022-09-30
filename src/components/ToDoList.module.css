@@ -6,18 +6,20 @@
 
 .container main {
   min-height: 51.5px;
+  display: flex;
 }
 
 .fieldAddTasks {
   margin-top: -1.688rem;
-  width: 46rem;
+  width: 100%;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 8px;
 }
 
 .fieldAddTasks input {
-  width: 39.875rem;
+  flex: 1;
   height: 3.375rem;
   padding: 1rem;
   font-weight: 400;
@@ -53,10 +55,11 @@
 }
 
 .containerTasks {
+  display: flex;
+  flex-direction: column;
   max-width: 46rem;
   margin-top: 4rem;
   height: 17.938rem;
-  width: 46rem;
 }
 
 .inforTasks {
