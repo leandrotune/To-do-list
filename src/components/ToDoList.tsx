@@ -1,4 +1,4 @@
-import { ChangeEvent, FormEvent, InvalidEvent, useState } from 'react';
+import { ChangeEvent, FormEvent, InvalidEvent, useEffect, useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import { PlusCircle } from 'phosphor-react'
 
@@ -6,6 +6,8 @@ import { Task } from './Task'
 import { NoListShown } from './NoListShown';
 
 import styles from './ToDoList.module.css'
+
+const LOCAL_STORAGE_KEY = "todo:savedTasks";
 
 interface TaskAddProps {
   id: string;
@@ -16,6 +18,22 @@ interface TaskAddProps {
 export function ToDoList() {
   const [newTaskText, setNewTaskText] = useState([''])
   const [addTasks, setAddTask] = useState<TaskAddProps[]>([])
+  
+  function loadSavedTasks() {
+    const saved = localStorage.getItem(LOCAL_STORAGE_KEY);
+    if (saved) {
+    setAddTask(JSON.parse(saved));
+    }
+  }
+
+  useEffect(() => {
+    loadSavedTasks();
+  }, []);
+
+  function setTasksAndSave(newTasks: TaskAddProps[]) {
+    setAddTask(newTasks);
+    localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(newTasks));
+  }
 
   function handleNewTaskText(event: ChangeEvent<HTMLInputElement>) {
     event.target.setCustomValidity('')
@@ -39,16 +57,16 @@ export function ToDoList() {
       return taskStructure.title = text
     })
 
-    setAddTask([...addTasks, taskStructure])
+    setTasksAndSave([...addTasks, taskStructure])
     setNewTaskText([''])
   }
 
   function deleteTask(taskId: string,) {
-    const taskListWithoutTheDeletedTask = addTasks.filter(task => {
+    const newTasks = addTasks.filter(task => {
       return task.id !== taskId
     })
-
-    setAddTask(taskListWithoutTheDeletedTask)
+    
+    setTasksAndSave(newTasks);
   }
 
   function taskCompleted(taskId: string) {
@@ -61,7 +79,7 @@ export function ToDoList() {
       }
       return task
     })
-    setAddTask(taskCompleted)
+    setTasksAndSave(taskCompleted)
   }
 
   let numberOfTasksCompleted = addTasks.filter(task => task.isComplete === true).length
