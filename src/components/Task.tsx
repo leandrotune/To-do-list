@@ -1,17 +1,17 @@
+import { ChangeEvent } from 'react';
 import { Trash } from 'phosphor-react'
-import { ChangeEvent, useState } from 'react';
 
 import styles from './Task.module.css'
+
 export interface TaskProps {
   id: string;
   content: string;
   isComplete: boolean;
   onDeleteTask: (id: string) => void;
-  onTaskCompleted: (id: string, isComplete: boolean,) => void
+  onTaskCompleted: (id: string, isComplete: boolean) => void
 }
 
 export function Task({ content, isComplete, id, onDeleteTask, onTaskCompleted }: TaskProps) {
-
 
   function handleTaskCompleted(event: ChangeEvent<HTMLInputElement>) {
     if (event.target.checked) {
@@ -41,7 +41,7 @@ export function Task({ content, isComplete, id, onDeleteTask, onTaskCompleted }:
           </p>
         </div>
 
-        <button title="Deletar comentário" onClick={handleDeleteTask}
+        <button title="Deleta comentário" onClick={handleDeleteTask}
           className={styles.content}
           type="button">
 
